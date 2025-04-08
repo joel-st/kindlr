@@ -27,12 +27,10 @@ const root = document.getElementById("root");
 /**
  * Renders the application to the DOM.
  * Sets up the Router with routes for the home page and a 404 page.
- * Includes the Toaster component for displaying notifications.
  */
 render(
   () => (
     <>
-      <Toaster />
       <Router base={import.meta.env.BASE_URL}>
         <Route path="/" component={HomeView} />
         <Route path="*" component={NotFoundView} />
