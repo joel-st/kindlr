@@ -1,4 +1,3 @@
-import { formatTimeAgo } from "../../../helpers/date";
 import { EventCreatedAtProps } from "../../../types";
 
 /**
@@ -12,7 +11,7 @@ export default function EventCreatedAt(props: EventCreatedAtProps) {
           Created
         </div>
         <div class="px-2 py-1 text-sm dark:text-gray-200">
-          {formatTimeAgo(props.createdAt)}
+          {props.createdAt}
         </div>
       </div>
     </div>
