@@ -23,7 +23,9 @@ import NotFoundView from "./routes/404";
 
 const root = document.getElementById("root");
 // Determine the base path for router (for GitHub Pages support)
-const basePath = location.pathname.includes('/kindlr') ? '/kindlr' : '';
+// Use a more robust way to detect if we're running on GitHub Pages
+const isGitHubPages = location.hostname.includes('github.io') || location.pathname.includes('/kindlr');
+const basePath = isGitHubPages ? '/kindlr' : '';
 
 /**
  * Renders the application to the DOM.

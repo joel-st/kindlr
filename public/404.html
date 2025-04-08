@@ -7,18 +7,25 @@
   <script>
     // Single Page Apps for GitHub Pages
     // MIT License - https://github.com/rafgraph/spa-github-pages
-    // This script takes the current URL and converts the path and query
-    // string into a single hash location for SPA routing
-    const pathSegmentsToKeep = 0; // Change this if your repo is under a subdirectory
+    // This script takes the current URL path and redirects to the base path
+    // with the path segments preserved for SPA routing
     
-    const l = window.location;
-    const origin = l.origin;
-    const pathname = l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/';
-    const search = l.search;
-    const hash = l.hash;
-    const url = origin + pathname + (search ? '#/?redirect=' + search.slice(1) : hash ? '#' + hash.slice(1) : '#/');
+    const pathSegments = window.location.pathname.split('/').filter(segment => segment);
+    const repoName = 'kindlr'; // Repository name
+    const base = '/' + repoName + '/';
     
-    window.location.replace(url);
+    // Remove the repo name from path segments if present
+    const segmentsWithoutRepo = pathSegments[0] === repoName ? pathSegments.slice(1) : pathSegments;
+    
+    // Build the redirect URL
+    let redirectUrl = base;
+    if (segmentsWithoutRepo.length > 0) {
+      // Store the path in sessionStorage for the app to use
+      sessionStorage.redirect = '/' + segmentsWithoutRepo.join('/');
+    }
+    
+    // Redirect to the main index.html
+    window.location.replace(redirectUrl);
   </script>
 </head>
 <body>

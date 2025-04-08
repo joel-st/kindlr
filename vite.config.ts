@@ -5,7 +5,7 @@ import devtools from "solid-devtools/vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-  base: '',
+  base: process.env.NODE_ENV === 'production' ? '/kindlr/' : '',
   build: {
     sourcemap: true,
     target: ["chrome89", "edge89", "firefox89", "safari15"],

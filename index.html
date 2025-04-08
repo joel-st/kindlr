@@ -7,6 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kindlr</title>
     <meta name="description" content="Explore Nostr Kinds" />
+    <!-- Handle redirects from 404.html -->
+    <script>
+      (function() {
+        // Check if we have a redirect path stored in sessionStorage
+        const redirect = sessionStorage.redirect;
+        // Remove the redirect path from sessionStorage
+        delete sessionStorage.redirect;
+        // If we have a redirect path, use it
+        if (redirect && redirect !== location.pathname) {
+          // We need to handle the redirect path after the router initializes
+          window.history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root" class="h-dvh"></div>
