@@ -30,7 +30,7 @@ const root = document.getElementById("root");
 render(
   () => (
     <>
-      <Router base={import.meta.env.BASE_URL}>
+      <Router base="">
         <Route path="/" component={HomeView} />
         <Route path="*" component={NotFoundView} />
       </Router>
