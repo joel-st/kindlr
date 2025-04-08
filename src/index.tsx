@@ -1,6 +1,6 @@
 /**
  * Main application entry point.
- * Sets up the SolidJS application with routing, toast notifications,
+ * Sets up the SolidJS application with routing
  * and renders the application to the DOM.
  */
 import { render } from "solid-js/web";
@@ -22,6 +22,8 @@ import HomeView from "./routes/home";
 import NotFoundView from "./routes/404";
 
 const root = document.getElementById("root");
+// Determine the base path for router (for GitHub Pages support)
+const basePath = location.pathname.includes('/kindlr') ? '/kindlr' : '';
 
 /**
  * Renders the application to the DOM.
@@ -30,7 +32,7 @@ const root = document.getElementById("root");
 render(
   () => (
     <>
-      <Router base="">
+      <Router base={basePath}>
         <Route path="/" component={HomeView} />
         <Route path="*" component={NotFoundView} />
       </Router>
