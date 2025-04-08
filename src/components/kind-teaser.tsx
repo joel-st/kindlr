@@ -100,12 +100,12 @@ export default function KindTeaser(props: KindTeaserProps) {
     <div class="gap-3 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-950 hover:shadow-md transition-shadow flex flex-col bg-white dark:bg-gray-950 h-[60svh]">
       {/* Header with kind information */}
       <header class="flex flex-col gap-2 pt-1">
-        <div class="flex flex-row gap-2">
-          <h2 class="text-lg font-semibold grow flex flex-row gap-2 items-center">
-            <span class="text-sm px-1.5 py-1 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-gray-200">Kind {props.kind.kind}</span>
-            <span class="text-gray-600 dark:text-gray-200"> {props.kind.name}</span>
+        <div class="flex flex-row gap-2 w-full">
+          <h2 class="min-w-0 text-lg font-semibold flex-grow flex flex-row gap-2 items-center">
+            <span class="text-sm px-1.5 py-1 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-gray-200 whitespace-nowrap">Kind {props.kind.kind}</span>
+            <span class="min-w-0 text-gray-600 dark:text-gray-200 whitespace-nowrap truncate">{props.kind.name}</span>
           </h2>
-          <div class="flex flex-row gap-1 items-center">
+          <div class="flex flex-row gap-1 items-center shrink-0 ml-auto"> 
             <A href={props.kind.kurl} target="_blank" class="cursor-pointer bg-yellow-400 hover:bg-yellow-500 dark:bg-purple-700 dark:hover:bg-purple-800 rounded p-2 text-sm dark:text-gray-200"><FaSolidBook size={16} /></A>
             <A href={props.kind.nurl} target="_blank" class="cursor-pointer bg-yellow-400 hover:bg-yellow-500 dark:bg-purple-700 dark:hover:bg-purple-800 rounded p-2 text-sm dark:text-gray-200"><FaBrandsGithub size={16} /></A>
           </div>
@@ -150,7 +150,7 @@ export default function KindTeaser(props: KindTeaserProps) {
           </Show>
           
           {/* View toggle buttons */}
-          <div class="flex flex-row gap-2 justify-end">
+          <div class="w-full flex flex-row flex-wrap gap-2 justify-end">
             <button 
               onClick={() => EventComponent !== undefined && setView("component")} 
               disabled={EventComponent === undefined}
