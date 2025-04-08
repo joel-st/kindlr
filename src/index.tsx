@@ -25,7 +25,8 @@ const root = document.getElementById("root");
 // Determine the base path for router (for GitHub Pages support)
 // Use a more robust way to detect if we're running on GitHub Pages
 const isGitHubPages = location.hostname.includes('github.io') || location.pathname.includes('/kindlr');
-const basePath = isGitHubPages ? '/kindlr' : '';
+// Make sure base path has trailing slash for GitHub Pages
+const basePath = isGitHubPages ? '/kindlr/' : '/';
 
 /**
  * Renders the application to the DOM.

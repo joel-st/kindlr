@@ -10,22 +10,27 @@
     // This script takes the current URL path and redirects to the base path
     // with the path segments preserved for SPA routing
     
-    const pathSegments = window.location.pathname.split('/').filter(segment => segment);
-    const repoName = 'kindlr'; // Repository name
-    const base = '/' + repoName + '/';
-    
-    // Remove the repo name from path segments if present
-    const segmentsWithoutRepo = pathSegments[0] === repoName ? pathSegments.slice(1) : pathSegments;
-    
-    // Build the redirect URL
-    let redirectUrl = base;
-    if (segmentsWithoutRepo.length > 0) {
-      // Store the path in sessionStorage for the app to use
-      sessionStorage.redirect = '/' + segmentsWithoutRepo.join('/');
-    }
-    
-    // Redirect to the main index.html
-    window.location.replace(redirectUrl);
+    (function() {
+      // Get the current URL path
+      const location = window.location;
+      const pathname = location.pathname;
+      
+      // GitHub Pages repository name
+      const repoName = 'kindlr';
+      
+      // Check if the path starts with the repo name
+      const pathWithoutRepo = pathname.startsWith('/' + repoName) 
+        ? pathname.substring(repoName.length + 1) 
+        : pathname;
+      
+      // Save the current path to sessionStorage for the app to use
+      if (pathWithoutRepo) {
+        sessionStorage.redirect = pathWithoutRepo;
+      }
+      
+      // Redirect to the repo base with trailing slash
+      window.location.replace(location.origin + '/' + repoName + '/');
+    })();
   </script>
 </head>
 <body>
