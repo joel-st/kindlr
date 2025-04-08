@@ -3,7 +3,8 @@ import { A, useLocation } from "@solidjs/router";
 export default function Header() {
   const location = useLocation();
   // Determine the home path based on the current URL
-  const homePath = location.pathname.includes('/kindlr') ? '/kindlr/' : '/';
+  // Use the basePath from the router instead of adding a trailing slash
+  const homePath = location.pathname.includes('/kindlr') ? '/kindlr' : '';
   
   return (
     <header class="text-gray-700 bg-white dark:bg-gray-950 dark:text-gray-200 px-4 py-6 box-shadow-md">
