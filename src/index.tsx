@@ -5,7 +5,6 @@
  */
 import { render } from "solid-js/web";
 import { Route, Router } from "@solidjs/router";
-import { Toaster } from "solid-toast";
 import "solid-devtools";
 
 // styles 
