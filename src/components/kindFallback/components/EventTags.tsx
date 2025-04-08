@@ -76,7 +76,7 @@ export default function EventTags(props: EventTagsProps) {
       </div>
       
       {/* Tags content area */}
-      <div class="rounded-b-md p-2 text-sm max-h-48 overflow-y-auto border border-gray-200 dark:border-gray-600 border-t-0">
+      <div class="rounded-b-md p-2 text-sm max-h-32 overflow-y-auto border border-gray-200 dark:border-gray-600 border-t-0">
         {/* No tags message */}
         <Show when={props.tags.length === 0}>
           <em class="text-gray-500 dark:text-gray-200 px-1 text-xs">No tags</em>

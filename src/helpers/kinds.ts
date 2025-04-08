@@ -7,7 +7,7 @@ import { Component } from "solid-js";
 import { NostrEvent } from "nostr-tools";
 
 // Import specialized components for different kinds
-// No specialized components yet
+import Kind0Component from "../components/kinds/kind0";
 
 /**
  * Map of kind numbers to their corresponding SolidJS components
@@ -15,6 +15,7 @@ import { NostrEvent } from "nostr-tools";
  */
 const kindComponents: Record<number, Component<{ event: NostrEvent }>> = {
   // Add specialized kind components here as they are developed
+  0: Kind0Component,
 };
 
 /**

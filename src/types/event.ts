@@ -42,6 +42,9 @@ export interface EventPubkeyProps {
  */
 export interface EventSignatureProps {
   signature: string;
+  eventPubkey?: string;
+  eventId?: string;
+  event?: any; // Full Nostr event object
 }
 
 /**

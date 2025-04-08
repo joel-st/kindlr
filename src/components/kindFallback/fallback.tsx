@@ -13,7 +13,7 @@ import EventSignature from "./components/EventSignature";
  */
 export default function Fallback(props: { event: NostrEvent }) {  
   return (
-    <div class="space-y-3">
+    <div class="flex flex-col gap-3">
       <EventId id={props.event.id} />
       <EventPubkey pubkey={props.event.pubkey} />
       <div class="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-3">
@@ -22,7 +22,10 @@ export default function Fallback(props: { event: NostrEvent }) {
       </div>
       <EventContent content={props.event.content} />
       <EventTags tags={props.event.tags} />
-      <EventSignature signature={props.event.sig} />
+      <EventSignature 
+        signature={props.event.sig} 
+        event={props.event}
+      />
     </div>
   );
 }

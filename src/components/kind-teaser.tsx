@@ -62,10 +62,11 @@ export default function KindTeaser(props: KindTeaserProps) {
     
     // Subscribe to events using the service helper function
     const relaySubscription = subscribeEvents(
-      { kinds: [props.kind.kind], limit: 5 },
+      { kinds: [props.kind.kind], limit: 1 },
       {
         onevent: (packet) => {
           eventStore.add(packet.event, packet.relay);
+          console.log(packet.event.kind,packet.event)
         },
         oneose: () => {
           // When EOSE is received, we can stop loading
@@ -96,10 +97,10 @@ export default function KindTeaser(props: KindTeaserProps) {
     return baseStyle + "bg-gray-300 hover:bg-yellow-400 dark:bg-gray-700 dark:hover:bg-purple-800 text-gray-700 dark:text-gray-200";
   };
 
-  return (     
-    <div class="gap-3 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-950 hover:shadow-md transition-shadow flex flex-col bg-white dark:bg-gray-950 h-[60svh]">
+  return (
+    <div class="gap-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-950 hover:shadow-md transition-shadow flex flex-col bg-white dark:bg-gray-950">
       {/* Header with kind information */}
-      <header class="flex flex-col gap-2 pt-1">
+      <header class="flex flex-col gap-2 px-3 pt-3">
         <div class="flex flex-row gap-2 w-full">
           <h2 class="min-w-0 text-lg font-semibold flex-grow flex flex-row gap-2 items-center">
             <span class="text-sm px-1.5 py-1 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-gray-200 whitespace-nowrap">Kind {props.kind.kind}</span>
@@ -115,28 +116,28 @@ export default function KindTeaser(props: KindTeaserProps) {
       
       {/* Content area with loading state, empty state, and event views */}
       <Show when={!loading()} fallback={
-        <div class="w-full h-full flex flex-col gap-4 items-center justify-center">
+        <div class="w-full h-full flex flex-col gap-4 items-center justify-center py-16">
           <div class="h-14 w-14 animate-spin rounded-full border-6 border-gray-100 dark:border-gray-700 border-t-yellow-400 dark:border-t-purple-700" />
           <span class="text-sm text-gray-300 dark:text-gray-600 italic">Wait for it...</span>
         </div>
       }>
         <Show when={events().length > 0} fallback={
-          <div class="w-full h-full flex flex-col gap-2 text-lg items-center justify-center dark:text-gray-200">
+          <div class="w-full h-full flex flex-col gap-2 items-center justify-center dark:text-gray-200 py-16">
             😣 No events found for this kind
           </div>
         }>
           {/* Specialized component view */}
           <Show when={view() === "component" && EventComponent !== undefined}>
-            <div class="overflow-y-auto flex-1 p-4">
+            <div class="overflow-y-auto flex-1 px-3">
               {/* @ts-ignore - The component is dynamically loaded */}
-              <EventComponent event={events()[0]} />
+              <EventComponent event={events()[Math.floor(Math.random() * events().length)]} />
             </div>
           </Show>
           
           {/* Raw JSON view */}
           <Show when={view() === "raw"}>
-            <div class="overflow-auto flex-1">
-              <pre class="h-full text-xs overflow-auto whitespace-pre-wrap bg-gray-200 dark:bg-gray-900 p-4 rounded dark:text-gray-100">
+            <div class="overflow-auto flex-1 px-3">
+              <pre class="h-full text-xs overflow-auto whitespace-pre-wrap break-words max-h-[80svh] bg-gray-200 dark:bg-gray-900 p-4 rounded dark:text-gray-100">
                 {JSON.stringify(events()[0], null, 2)}
               </pre>
             </div>
@@ -144,13 +145,13 @@ export default function KindTeaser(props: KindTeaserProps) {
           
           {/* Fallback view for all kinds */}
           <Show when={view() === "fallback"}>
-            <div class="overflow-y-auto flex-1">
+            <div class="overflow-y-auto flex-1 px-3">
               <Fallback event={events()[0]} />
             </div>
           </Show>
           
           {/* View toggle buttons */}
-          <div class="w-full flex flex-row flex-wrap gap-2 justify-end">
+          <footer class="w-full flex flex-row flex-wrap gap-2 justify-end px-3 pb-3">
             <button 
               onClick={() => EventComponent !== undefined && setView("component")} 
               disabled={EventComponent === undefined}
@@ -171,7 +172,7 @@ export default function KindTeaser(props: KindTeaserProps) {
             >
               <VsJson /> JSON
             </button>
-          </div>
+          </footer>
         </Show>
       </Show>
     </div>
