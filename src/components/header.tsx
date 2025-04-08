@@ -1,10 +1,9 @@
-import { A, useLocation } from "@solidjs/router";
+import { A } from "@solidjs/router";
 
 export default function Header() {
-  const location = useLocation();
-  // Determine home path based on the router base path
-  const isGitHubPages = location.pathname.includes('/kindlr');
-  const homePath = isGitHubPages ? '/kindlr' : '/';
+  // When using Router with base="/kindlr", links should be relative to that base
+  // So home path should always be "/" when using the A component
+  const homePath = "/";
   
   return (
     <header class="text-gray-700 bg-white dark:bg-gray-950 dark:text-gray-200 px-4 py-6 box-shadow-md">

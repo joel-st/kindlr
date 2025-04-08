@@ -3,7 +3,7 @@
  * Displays when a user navigates to a route that doesn't exist.
  */
 
-import { A, useLocation } from "@solidjs/router";
+import { A } from "@solidjs/router";
 import { createSignal, onMount } from "solid-js";
 import { IoHome } from "solid-icons/io";
 
@@ -15,9 +15,9 @@ import { IoHome } from "solid-icons/io";
  */
 export default function NotFoundView() {
   const [showAnimation, setShowAnimation] = createSignal(false);
-  const location = useLocation();
-  // Determine the home path based on the current URL - without trailing slash
-  const homePath = location.pathname.includes('/kindlr') ? '/kindlr' : '';
+  // When using Router with base="/kindlr", links should be relative to that base
+  // So home path should always be "/"
+  const homePath = "/";
 
   onMount(() => {
     // Start animation after component mounts
