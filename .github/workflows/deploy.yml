@@ -29,21 +29,16 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: '20'
-          
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9.15.6
+          bun-version: latest
       
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
       
       - name: Build
-        run: pnpm build
+        run: bun run build
         env:
           VERSION: ${{ steps.get_version.outputs.VERSION }}
       
