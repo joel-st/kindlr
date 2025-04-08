@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+:root {
+  --site-background: theme('colors.gray.100');
+  --site-text-color: theme('colors.gray.900');
+}
+
+.dark {
+  --site-background: theme('colors.gray.900');
+  --site-text-color: theme('colors.gray.100');
+}
+
+html, body {
+  background-color: var(--site-background);
+  color: var(--site-text-color);
+}
