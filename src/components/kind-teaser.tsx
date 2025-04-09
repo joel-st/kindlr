@@ -4,12 +4,12 @@
  */
 
 import { A } from "@solidjs/router";
-import { createSignal, createEffect, Show, onCleanup } from "solid-js";
+import { createSignal, createEffect, Show, onCleanup, For } from "solid-js";
 import { NostrEvent } from "nostr-tools";
 import { eventStore } from "../services/stores";
 import { subscribeEvents } from "../services/nostr";
-import { FaSolidBook, FaBrandsGithub } from 'solid-icons/fa'
-import { getKindComponent, hasKindComponent } from "../helpers/kinds";
+import { FaSolidBook, FaBrandsGithub, FaSolidChevronDown } from 'solid-icons/fa'
+import { getKindComponent, hasKindComponent, getKindVariants, getKindDefaultVariant, KindVariant } from "../helpers/kinds";
 import { VsJson } from "solid-icons/vs";
 
 import Fallback from "./kindFallback/fallback";
@@ -46,6 +46,18 @@ export default function KindTeaser(props: KindTeaserProps) {
   
   // Get the specialized component for the current kind, if one exists
   const EventComponent = getKindComponent(props.kind.kind);
+  
+  // Get available variants for this kind
+  const availableVariants = getKindVariants(props.kind.kind);
+  const defaultVariant = getKindDefaultVariant(props.kind.kind);
+  
+  // Set the initial variant to the default or first available
+  const [selectedVariant, setSelectedVariant] = createSignal<KindVariant | undefined>(
+    defaultVariant || (availableVariants.length > 0 ? availableVariants[0] : undefined)
+  );
+  
+  // State for dropdown visibility
+  const [isDropdownOpen, setIsDropdownOpen] = createSignal(false);
 
   /**
    * Effect for loading events from the event store and subscribing to new events
@@ -96,6 +108,22 @@ export default function KindTeaser(props: KindTeaserProps) {
     
     return baseStyle + "bg-gray-300 hover:bg-yellow-400 dark:bg-gray-700 dark:hover:bg-purple-800 text-gray-700 dark:text-gray-200";
   };
+  
+  /**
+   * Toggle the dropdown visibility
+   */
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen());
+  };
+  
+  /**
+   * Select a variant and close the dropdown
+   */
+  const selectVariant = (variant: KindVariant) => {
+    setSelectedVariant(variant);
+    setView("component");
+    setIsDropdownOpen(false);
+  };
 
   return (
     <div class="gap-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-950 hover:shadow-md transition-shadow flex flex-col bg-white dark:bg-gray-950">
@@ -128,9 +156,12 @@ export default function KindTeaser(props: KindTeaserProps) {
         }>
           {/* Specialized component view */}
           <Show when={view() === "component" && EventComponent !== undefined}>
-            <div class="overflow-y-auto flex-1 px-3">
+            <div class="overflow-y-auto flex-1 px-3 flex flex-col justify-center">
               {/* @ts-ignore - The component is dynamically loaded */}
-              <EventComponent event={events()[Math.floor(Math.random() * events().length)]} />
+              <EventComponent 
+                event={events()[Math.floor(Math.random() * events().length)]} 
+                variant={selectedVariant()}
+              />
             </div>
           </Show>
           
@@ -151,27 +182,66 @@ export default function KindTeaser(props: KindTeaserProps) {
           </Show>
           
           {/* View toggle buttons */}
-          <footer class="w-full flex flex-row flex-wrap gap-2 justify-end px-3 pb-3">
-            <button 
-              onClick={() => EventComponent !== undefined && setView("component")} 
-              disabled={EventComponent === undefined}
-              class={getButtonStyle("component") + (EventComponent !== undefined ? "" : " opacity-50 cursor-not-allowed pointer-events-none") + " mr-auto"}
-            >
-              Component
-            </button>
-            <button 
-              onClick={() => setView("fallback")} 
-              class={getButtonStyle("fallback")}
-            >
-              Fallback
-            </button>
+          <footer class="w-full flex flex-row flex-wrap gap-2 justify-between px-3 pb-3">
+            {/* Component dropdown */}
+            <div class="relative">
+              <button 
+                onClick={toggleDropdown}
+                disabled={EventComponent === undefined}
+                class={`flex items-center gap-1 px-3 py-1.5 rounded text-sm ${
+                  view() === "component" 
+                    ? "bg-yellow-400 dark:bg-purple-700 text-black dark:text-gray-200" 
+                    : "bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-yellow-400 dark:hover:bg-purple-800"
+                } ${EventComponent === undefined ? "opacity-50 cursor-not-allowed" : ""}`}
+              >
+                <span>
+                  {view() === "component" && selectedVariant() 
+                    ? `Component (${selectedVariant()})` 
+                    : "Component"}
+                </span>
+                <FaSolidChevronDown size={12} />
+              </button>
+              
+              {/* Dropdown menu - only show when dropdown is open and component exists */}
+              <Show when={isDropdownOpen() && EventComponent !== undefined}>
+                <div class="absolute left-0 top-full mt-1 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
+                  <div class="py-1" role="menu" aria-orientation="vertical">
+                    <For each={availableVariants}>
+                      {(variant) => (
+                        <button
+                          onClick={() => selectVariant(variant)}
+                          class={`block w-full text-left px-4 py-2 text-sm ${
+                            view() === "component" && selectedVariant() === variant
+                              ? "bg-yellow-100 dark:bg-purple-900 text-black dark:text-gray-200"
+                              : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                          }`}
+                          role="menuitem"
+                        >
+                          {variant}
+                        </button>
+                      )}
+                    </For>
+                  </div>
+                </div>
+              </Show>
+            </div>
+            
+            {/* Fallback and JSON buttons */}
+            <div class="flex flex-row gap-2">
+              <button 
+                onClick={() => setView("fallback")} 
+                class={getButtonStyle("fallback")}
+              >
+                Fallback
+              </button>
 
-            <button 
-              onClick={() => setView("raw")} 
-              class={getButtonStyle("raw")}
-            >
-              <VsJson /> JSON
-            </button>
+              <button 
+                onClick={() => setView("raw")} 
+                class={getButtonStyle("raw")}
+              >
+                <VsJson /> JSON
+              </button>
+            </div>
           </footer>
         </Show>
       </Show>
