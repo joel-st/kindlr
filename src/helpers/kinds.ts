@@ -9,9 +9,10 @@ import { NostrEvent } from "nostr-tools";
 // Import specialized components for different kinds
 import Kind0Component, { Kind0Variant } from "../components/kinds/kind0";
 import Kind1Component, { Kind1Variant } from "../components/kinds/kind1";
+import Kind3Component, { Kind3Variant } from "../components/kinds/kind3";
 
 // Define the union type of all possible variants
-export type KindVariant = Kind0Variant | Kind1Variant;
+export type KindVariant = Kind0Variant | Kind1Variant | Kind3Variant;
 
 /**
  * Interface for kind component with variants
@@ -31,12 +32,17 @@ const kindComponents: Record<number, KindComponentWithVariants<any>> = {
   0: {
     component: Kind0Component,
     variants: ["full", 'full-lazy', 'compact', 'compact-lazy'],
-    defaultVariant: "full"
+    defaultVariant: "compact"
   },
   1: {
     component: Kind1Component,
     variants: ["full", "compact"],
-    defaultVariant: "full"
+    defaultVariant: "compact"
+  },
+  3: {
+    component: Kind3Component,
+    variants: ["full", "compact"],
+    defaultVariant: "compact"
   },
 };
 

@@ -190,7 +190,7 @@ export default function KindTeaser(props: KindTeaserProps) {
         }>
           {/* Specialized component view */}
           <Show when={view() === "component" && EventComponent !== undefined}>
-            <div class="overflow-y-auto flex-1 px-3 grid place-items-center">
+            <div class="overflow-y-auto flex-1 px-3 grid place-items-center max-h-[80svh]">
               {/* @ts-ignore - The component is dynamically loaded */}
               <EventComponent 
                 event={getCurrentEvent()} 

@@ -21,7 +21,7 @@ interface Kind1ComponentProps {
  */
 const Kind1Component: Component<Kind1ComponentProps> = (props) => {
   // Default to full variant if none specified
-  const variant = () => props.variant || "full";
+  const variant = () => props.variant || "compact";
   
   // Render the appropriate variant
   return (
