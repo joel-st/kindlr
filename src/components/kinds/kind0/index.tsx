@@ -7,8 +7,10 @@ import { Component } from "solid-js";
 import { NostrEvent } from "nostr-tools";
 import FullKind0Component from "./variants/full";
 import CompactKind0Component from "./variants/compact";
+import FullLazyKind0Component from "./variants/full-lazy";
+import CompactLazyKind0Component from "./variants/compact-lazy";
 
-export type Kind0Variant = "full" | "compact";
+export type Kind0Variant = "full" | "compact" | "full-lazy" | "compact-lazy";
 
 interface Kind0ComponentProps {
   event: NostrEvent;
@@ -28,6 +30,8 @@ const Kind0Component: Component<Kind0ComponentProps> = (props) => {
     <>
       {variant() === "full" && <FullKind0Component event={props.event} />}
       {variant() === "compact" && <CompactKind0Component event={props.event} />}
+      {variant() === "full-lazy" && <FullLazyKind0Component event={props.event} />}
+      {variant() === "compact-lazy" && <CompactLazyKind0Component event={props.event} />}
     </>
   );
 };

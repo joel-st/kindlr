@@ -29,7 +29,7 @@ const kindComponents: Record<number, KindComponentWithVariants> = {
   // Add specialized kind components here as they are developed
   0: {
     component: Kind0Component,
-    variants: ["full", "compact"],
+    variants: ["full", 'full-lazy', 'compact', 'compact-lazy'],
     defaultVariant: "full"
   },
 };

@@ -1,18 +1,19 @@
 /**
- * Compact variant of Kind 0 specialized component for displaying user metadata
+ * Compact-lazy variant of Kind 0 specialized component for displaying user metadata
  * Shows a minimal profile with just the profile image, username and public key
+ * The profile image is only loaded when clicked
  */
 
-import { Component, Show } from "solid-js";
+import { Component, Show, createSignal } from "solid-js";
 import { NostrEvent } from "nostr-tools";
 import { parseProfileMetadata, getDisplayName, getProfilePicture } from "../../../../../helpers/profile";
 import { shortenEntity } from "../../../../../helpers/nip19";
 import { getContrastTextColor } from "../../../../../helpers/colors";
 
 /**
- * Compact variant component for displaying Kind 0 (user metadata) events
+ * Compact-lazy variant component for displaying Kind 0 (user metadata) events
  */
-const CompactKind0Component: Component<{ event: NostrEvent }> = (props) => {
+const CompactLazyKind0Component: Component<{ event: NostrEvent }> = (props) => {
   // Parse profile metadata from event content
   const metadata = () => parseProfileMetadata(props.event);
   
@@ -24,21 +25,25 @@ const CompactKind0Component: Component<{ event: NostrEvent }> = (props) => {
   
   // Get text contrast color for the profile picture fallback color
   const pictureTextColor = () => getContrastTextColor(profilePic().fallbackColor);
+
+  // Signal to track if image should be loaded
+  const [shouldLoadImage, setShouldLoadImage] = createSignal(false);
   
   return (
     <div class="flex items-center gap-3 p-2 pr-4 rounded-lg bg-gray-100 dark:bg-gray-700 transition-colors w-auto">
       {/* Profile picture */}
       <div 
-        class="rounded-full overflow-hidden"
+        class="rounded-full overflow-hidden cursor-pointer"
         style={{
           width: '40px',
           height: '40px',
           "background-color": profilePic().fallbackColor,
           "color": pictureTextColor()
         }}
+        onClick={() => setShouldLoadImage(true)}
       >
         <Show 
-          when={profilePic().url} 
+          when={shouldLoadImage() && profilePic().url} 
           fallback={
             <div class="w-full h-full flex items-center justify-center text-sm font-semibold">
               {displayName().substring(0, 2).toUpperCase()}
@@ -76,4 +81,4 @@ const CompactKind0Component: Component<{ event: NostrEvent }> = (props) => {
   );
 };
 
-export default CompactKind0Component; 
+export default CompactLazyKind0Component; 
