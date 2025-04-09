@@ -40,7 +40,7 @@ const FullLazyKind0Component: Component<{ event: NostrEvent }> = (props) => {
   const [shouldLoadProfile, setShouldLoadProfile] = createSignal(false);
   
   return (
-    <div class="flex flex-col gap-4 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+    <div class="flex flex-col gap-4 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800  max-w-full min-w-full">
       {/* Banner */}
       <div 
         class="h-36 relative cursor-pointer"

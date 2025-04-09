@@ -103,10 +103,10 @@ export default function KindTeaser(props: KindTeaserProps) {
     const baseStyle = "cursor-pointer rounded px-2 py-1 text-sm flex flex-row gap-1 items-center justify-center ";
     
     if (view() === buttonView) {
-      return baseStyle + "bg-yellow-400 dark:bg-purple-700 text-black dark:text-gray-200";
+      return baseStyle + "bg-yellow-500 dark:bg-purple-800 text-black dark:text-gray-200";
     }
     
-    return baseStyle + "bg-gray-300 hover:bg-yellow-400 dark:bg-gray-700 dark:hover:bg-purple-800 text-gray-700 dark:text-gray-200";
+    return baseStyle + "bg-yellow-400 hover:bg-yellow-500 dark:bg-purple-700 dark:hover:bg-purple-800 text-gray-700 dark:text-gray-200";
   };
   
   /**
@@ -189,10 +189,12 @@ export default function KindTeaser(props: KindTeaserProps) {
                 onClick={toggleDropdown}
                 disabled={EventComponent === undefined}
                 class={`flex items-center gap-1 px-3 py-1.5 rounded text-sm ${
-                  view() === "component" 
-                    ? "bg-yellow-400 dark:bg-purple-700 text-black dark:text-gray-200" 
-                    : "bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-yellow-400 dark:hover:bg-purple-800"
-                } ${EventComponent === undefined ? "opacity-50 cursor-not-allowed" : ""}`}
+                  EventComponent === undefined 
+                    ? "opacity-50 cursor-not-allowed bg-gray-300 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700"
+                    : view() === "component" 
+                      ? "bg-yellow-500 dark:bg-purple-800 text-black dark:text-gray-200" 
+                      : "bg-yellow-400 dark:bg-purple-700 text-gray-700 dark:text-gray-300 hover:bg-yellow-500 dark:hover:bg-purple-800"
+                }`}
               >
                 <span>
                   {view() === "component" && selectedVariant() 
