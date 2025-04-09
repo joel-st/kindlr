@@ -152,12 +152,12 @@ export default function KindTeaser(props: KindTeaserProps) {
   };
 
   return (
-    <div class="gap-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-950 hover:shadow-md transition-shadow flex flex-col bg-white dark:bg-gray-950">
+    <div class="gap-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-950 hover:shadow-md flex flex-col bg-white dark:bg-gray-950">
       {/* Header with kind information */}
       <header class="flex flex-col gap-2 px-3 pt-3">
         <div class="flex flex-row gap-2 w-full">
           <h2 class="min-w-0 text-lg font-semibold flex-grow flex flex-row gap-2 items-center">
-            <span class="text-sm px-1.5 py-1 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-gray-200 whitespace-nowrap">Kind {props.kind.kind}</span>
+            <span class="text-sm px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-gray-200 whitespace-nowrap">Kind {props.kind.kind}</span>
             <span class="min-w-0 text-gray-600 dark:text-gray-200 whitespace-nowrap truncate">{props.kind.name}</span>
           </h2>
           <div class="flex flex-row gap-1 items-center shrink-0 ml-auto"> 

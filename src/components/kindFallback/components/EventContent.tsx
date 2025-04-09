@@ -47,7 +47,7 @@ export default function EventContent(props: EventContentProps) {
           Content
         </div>
         {isJsonContent(props.content) && (
-          <div class="flex flex-col text-xs px-1 py-.5 bg-gray-300 dark:bg-gray-700 rounded">
+          <div class="flex flex-col text-xs px-1 py-.5 bg-gray-300 dark:bg-gray-700 dark:text-gray-200 rounded">
             {getKeyCount(props.content)}
           </div>
         )}
@@ -55,7 +55,7 @@ export default function EventContent(props: EventContentProps) {
           <div class="flex flex-col items-end">
             <button 
               onClick={toggleRawContent} 
-              class="cursor-pointer gap-1 flex flex-row items-center text-center px-1 py-.5 bg-yellow-400 dark:bg-purple-700 hover:bg-yellow-500 dark:hover:bg-purple-800 text-xs rounded transition-colors dark:text-gray-200"
+              class="cursor-pointer gap-1 flex flex-row items-center text-center px-1 py-.5 bg-yellow-400 dark:bg-purple-700 hover:bg-yellow-500 dark:hover:bg-purple-800 text-xs rounded dark:text-gray-200"
             >
               {showRawContent() ? "Formatted View" : <><VsJson /> JSON</>}
             </button>

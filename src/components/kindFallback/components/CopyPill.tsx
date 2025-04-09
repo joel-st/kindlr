@@ -65,7 +65,7 @@ export default function CopyPill(props: CopyPillProps) {
       {/* Copy button */}
       <button 
         onClick={copyToClipboard}
-        class={`cursor-pointer flex items-center justify-center px-2 py-1 ${copyClass()} text-sm transition-colors whitespace-nowrap dark:text-gray-200`}
+        class={`cursor-pointer flex items-center justify-center px-2 py-1 ${copyClass()} text-sm whitespace-nowrap dark:text-gray-200`}
         title="Copy to clipboard"
       >
         {copied() ? <IoCheckmark /> : <FiCopy />}

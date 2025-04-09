@@ -27,8 +27,8 @@ export default function NotFoundView() {
   return (
     <div class="min-h-screen flex flex-col">
       {/* Main content */}
-      <main class="flex-1 flex flex-col items-center justify-center gap-8 p-6 bg-gray-100 dark:bg-gray-900 transition-colors">
-        <div class={`transform transition-all duration-700 ${showAnimation() ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>          
+      <main class="flex-1 flex flex-col items-center justify-center gap-8 p-6 bg-gray-100 dark:bg-gray-900">
+        <div class={`transform duration-700 ${showAnimation() ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>          
           {/* Error info */}
           <div class="text-center mb-4 flex flex-col gap-4">
             <div class="flex flex-row gap-2 items-center justify-center">
@@ -44,7 +44,7 @@ export default function NotFoundView() {
           <div class="flex justify-center">
             <A
               href={homePath}
-              class="cursor-pointer bg-yellow-400 hover:bg-yellow-500 dark:bg-purple-700 dark:hover:bg-purple-800 rounded px-4 py-2 text-black dark:text-gray-200 font-medium flex items-center gap-2 transition-colors"
+              class="cursor-pointer bg-yellow-400 hover:bg-yellow-500 dark:bg-purple-700 dark:hover:bg-purple-800 rounded px-4 py-2 text-black dark:text-gray-200 font-medium flex items-center gap-2"
               aria-label="return home"
             >
               <IoHome size={20} />

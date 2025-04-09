@@ -10,10 +10,6 @@ import "solid-devtools";
 // styles 
 import "./index.css";
 
-// theme
-import { setupThemeSwitcher } from "./helpers/theme";
-setupThemeSwitcher();
-
 // services
 import "./services/lifecycle";
 

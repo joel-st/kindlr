@@ -26,7 +26,7 @@ const CompactKind0Component: Component<{ event: NostrEvent }> = (props) => {
   const pictureTextColor = () => getContrastTextColor(profilePic().fallbackColor);
   
   return (
-    <div class="flex items-center gap-3 p-2 pr-4 rounded-lg bg-gray-100 dark:bg-gray-700 transition-colors w-auto">
+    <div class="flex items-center gap-3 p-2 pr-4 rounded-lg bg-gray-100 dark:bg-gray-700 w-auto">
       {/* Profile picture */}
       <div 
         class="rounded-full overflow-hidden"

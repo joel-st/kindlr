@@ -59,7 +59,7 @@ export default function EventTags(props: EventTagsProps) {
         <div class="px-2 py-1 font-semibold text-sm text-gray-700 dark:text-gray-200 grow">
           Tags
         </div>
-        <div class="flex flex-col text-xs px-1 py-.5 bg-gray-300 dark:bg-gray-700 rounded">
+        <div class="flex flex-col text-xs px-1 py-.5 bg-gray-300 dark:bg-gray-700 dark:text-gray-200 rounded">
           {props.tags.length}
         </div>
         {/* Toggle button */}
@@ -67,7 +67,7 @@ export default function EventTags(props: EventTagsProps) {
           <div class="flex flex-col items-end">
             <button 
               onClick={toggleRawJson} 
-              class="cursor-pointer gap-1 flex flex-row items-center text-center px-1 py-.5 bg-yellow-400 dark:bg-purple-700 hover:bg-yellow-500 dark:hover:bg-purple-800 text-xs rounded transition-colors dark:text-gray-200"
+              class="cursor-pointer gap-1 flex flex-row items-center text-center px-1 py-.5 bg-yellow-400 dark:bg-purple-700 hover:bg-yellow-500 dark:hover:bg-purple-800 text-xs rounded dark:text-gray-200"
             >
               {showRawJson() ? "Formatted" : <><VsJson /> JSON</>}
             </button>
