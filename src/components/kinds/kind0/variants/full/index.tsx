@@ -9,8 +9,9 @@ import { parseProfileMetadata, getDisplayName, getProfilePicture, getProfileBann
 import { IoGlobeOutline } from "solid-icons/io";
 import { FaSolidAt } from "solid-icons/fa";
 import { SiLightning } from "solid-icons/si";
-import { shortenEntity } from "../../../../../helpers/nip19";
+import { shortenEntity, hexToNpub } from "../../../../../helpers/nip19";
 import { getContrastTextColor } from "../../../../../helpers/colors";
+import { createLinkifiedProps } from "../../../../../helpers/text-links";
 
 /**
  * Full variant component for displaying Kind 0 (user metadata) events
@@ -58,7 +59,7 @@ const FullKind0Component: Component<{ event: NostrEvent }> = (props) => {
         
         {/* Profile picture (positioned overlapping the banner) */}
         <div 
-          class="absolute left-6 bottom-0 transform translate-y-1/2 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-md"
+          class="absolute left-6 bottom-0 transform translate-y-1/2 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-md shrink-0"
           style={{
             width: '90px',
             height: '90px',
@@ -100,16 +101,17 @@ const FullKind0Component: Component<{ event: NostrEvent }> = (props) => {
           <h2 class="font-bold text-lg dark:text-white">
             {displayName()}
           </h2>
-          <div class="text-sm text-gray-500 dark:text-gray-400 font-mono">
-            {shortenEntity(props.event.pubkey)}
+          <div class="text-sm text-gray-500 dark:text-gray-400 font-mono break-all">
+            {hexToNpub(props.event.pubkey) || props.event.pubkey}
           </div>
         </div>
         
         {/* About section */}
         <Show when={metadata().about?.trim()}>
-          <p class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words text-sm">
-            {metadata().about}
-          </p>
+          <p 
+            class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words text-sm"
+            {...createLinkifiedProps(metadata().about || '', "text-yellow-500 dark:text-purple-400 hover:underline")}
+          />
         </Show>
         
         {/* Additional metadata */}
@@ -122,7 +124,7 @@ const FullKind0Component: Component<{ event: NostrEvent }> = (props) => {
                 href={metadata().website?.startsWith('http') ? metadata().website : `https://${metadata().website}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                class="text-blue-600 dark:text-blue-400 hover:underline truncate"
+                class="text-yellow-500 dark:text-purple-400 hover:underline truncate"
               >
                 {metadata().website}
               </a>
@@ -143,9 +145,12 @@ const FullKind0Component: Component<{ event: NostrEvent }> = (props) => {
           <Show when={metadata().lud16?.trim() || metadata().lud06?.trim()}>
             <div class="flex items-center gap-2 text-sm">
               <SiLightning class="text-yellow-500 dark:text-purple-400" />
-              <span class="text-gray-700 dark:text-gray-300 truncate">
+              <a 
+                href={`lightning:${metadata().lud16 || metadata().lud06}`}
+                class="text-yellow-500 dark:text-purple-400 hover:underline truncate"
+              >
                 {metadata().lud16 || metadata().lud06}
-              </span>
+              </a>
             </div>
           </Show>
           

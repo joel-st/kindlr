@@ -8,28 +8,34 @@ import { NostrEvent } from "nostr-tools";
 
 // Import specialized components for different kinds
 import Kind0Component, { Kind0Variant } from "../components/kinds/kind0";
+import Kind1Component, { Kind1Variant } from "../components/kinds/kind1";
 
-// Define the variant type - using Kind0Variant as the base
-export type KindVariant = Kind0Variant;
+// Define the union type of all possible variants
+export type KindVariant = Kind0Variant | Kind1Variant;
 
 /**
  * Interface for kind component with variants
  */
-export interface KindComponentWithVariants {
-  component: Component<{ event: NostrEvent; variant?: KindVariant }>;
-  variants?: KindVariant[];
-  defaultVariant?: KindVariant;
+export interface KindComponentWithVariants<T extends KindVariant = KindVariant> {
+  component: Component<{ event: NostrEvent; variant?: T }>;
+  variants?: T[];
+  defaultVariant?: T;
 }
 
 /**
  * Map of kind numbers to their corresponding SolidJS components with variants
  * As specialized components are developed, they should be added here
  */
-const kindComponents: Record<number, KindComponentWithVariants> = {
+const kindComponents: Record<number, KindComponentWithVariants<any>> = {
   // Add specialized kind components here as they are developed
   0: {
     component: Kind0Component,
     variants: ["full", 'full-lazy', 'compact', 'compact-lazy'],
+    defaultVariant: "full"
+  },
+  1: {
+    component: Kind1Component,
+    variants: ["full", "compact"],
     defaultVariant: "full"
   },
 };

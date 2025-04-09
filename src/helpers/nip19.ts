@@ -32,13 +32,13 @@ export function identifyEntity(str: string): Nip19EntityType {
   }
   
   // Check NIP-19 entity prefixes
-  if (str.startsWith('npub1')) return 'npub';
-  if (str.startsWith('nsec1')) return 'nsec';
-  if (str.startsWith('note1')) return 'note';
-  if (str.startsWith('nprofile1')) return 'nprofile';
-  if (str.startsWith('nevent1')) return 'nevent';
-  if (str.startsWith('naddr1')) return 'naddr';
-  if (str.startsWith('nrelay1')) return 'nrelay';
+  if (str.startsWith('npub')) return 'npub';
+  if (str.startsWith('nsec')) return 'nsec';
+  if (str.startsWith('note')) return 'note';
+  if (str.startsWith('nprofile')) return 'nprofile';
+  if (str.startsWith('nevent')) return 'nevent';
+  if (str.startsWith('naddr')) return 'naddr';
+  if (str.startsWith('nrelay')) return 'nrelay';
   
   return 'unknown';
 }
@@ -76,34 +76,32 @@ export function npubToHex(npub: string): string | null {
  * Shorten a NIP-19 entity or hex string for display
  * @param entity The entity string (hex, npub, note, etc.)
  * @param showPrefix Whether to show the type prefix in the shortened form
- * @returns Shortened string (e.g. "npub:abc")
+ * @returns Shortened string (e.g. "npub:ab:cd")
  */
 export function shortenEntity(entity: string, showPrefix = true): string {
   const type = identifyEntity(entity);
   
   if (type === 'unknown') {
     // If we don't recognize the type, just do a generic shortening
-    if (entity.length > 15) {
-      return `${entity.slice(0, 6)}:${entity.slice(-4)}`;
+    if (entity.length > 10) {
+      return `${entity.slice(0, 4)}:${entity.slice(-2)}`;
     }
     return entity;
   }
   
   if (type === 'hex') {
-    return `${entity.slice(0, 6)}:${entity.slice(-4)}`;
+    return `${entity.slice(0, 4)}:${entity.slice(-2)}`;
   }
   
-  // For NIP-19 entities, preserve the prefix and bech32 information
+  // For NIP-19 entities, preserve the prefix and format properly
   let prefix = '';
-  let body = entity;
+  let body = '';
   
-  // Extract the prefix (e.g., "npub1")
-  const matches = entity.match(/^([a-z]+1)(.+)$/);
-  if (matches && matches.length > 2) {
-    prefix = matches[1];
-    body = matches[2];
-  }
+  // Handle NIP-19 entities (npub, note, etc.)
+  prefix = type;
+  body = entity.substring(prefix.length);
   
-  const shortened = `${body.slice(0, 4)}:${body.slice(-4)}`;
+  // Format as [prefix][first_two_chars_after_prefix]:[last_two_chars]
+  const shortened = `${body.slice(0, 2)}:${body.slice(-2)}`;
   return showPrefix ? `${prefix}${shortened}` : shortened;
 } 

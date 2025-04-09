@@ -68,7 +68,7 @@ export default function KindTeaser(props: KindTeaserProps) {
     // Subscribe to events from the event store
     const storeSubscription = eventStore.timeline({ kinds: [props.kind.kind] })
       .subscribe((storeEvents) => {
-        setEvents(storeEvents.slice(0, 3));
+        setEvents(storeEvents);
         if (storeEvents.length > 0) {
           setLoading(false);
         }

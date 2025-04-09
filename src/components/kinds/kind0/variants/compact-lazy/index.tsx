@@ -7,7 +7,7 @@
 import { Component, Show, createSignal } from "solid-js";
 import { NostrEvent } from "nostr-tools";
 import { parseProfileMetadata, getDisplayName, getProfilePicture } from "../../../../../helpers/profile";
-import { shortenEntity } from "../../../../../helpers/nip19";
+import { shortenEntity, hexToNpub } from "../../../../../helpers/nip19";
 import { getContrastTextColor } from "../../../../../helpers/colors";
 
 /**
@@ -33,7 +33,7 @@ const CompactLazyKind0Component: Component<{ event: NostrEvent }> = (props) => {
     <div class="flex items-center gap-3 p-2 pr-4 rounded-lg bg-gray-100 dark:bg-gray-700 w-auto">
       {/* Profile picture */}
       <div 
-        class="rounded-full overflow-hidden cursor-pointer"
+        class="rounded-full overflow-hidden cursor-pointer shrink-0"
         style={{
           width: '40px',
           height: '40px',
@@ -46,7 +46,7 @@ const CompactLazyKind0Component: Component<{ event: NostrEvent }> = (props) => {
           when={shouldLoadImage() && profilePic().url} 
           fallback={
             <div class="w-full h-full flex items-center justify-center text-sm font-semibold">
-              {displayName().substring(0, 2).toUpperCase()}
+              {props.event.pubkey.substring(0, 2).toUpperCase()}
             </div>
           }
         >
@@ -60,7 +60,7 @@ const CompactLazyKind0Component: Component<{ event: NostrEvent }> = (props) => {
               // Show fallback div
               e.currentTarget.parentElement!.innerHTML = `
                 <div class="w-full h-full flex items-center justify-center text-sm font-semibold" style="color: ${pictureTextColor()}">
-                  ${displayName().substring(0, 2).toUpperCase()}
+                  ${props.event.pubkey.substring(0, 2).toUpperCase()}
                 </div>
               `;
             }}
@@ -74,7 +74,7 @@ const CompactLazyKind0Component: Component<{ event: NostrEvent }> = (props) => {
           {displayName()}
         </span>
         <span class="text-xs text-gray-500 dark:text-gray-400 font-mono">
-          {shortenEntity(props.event.pubkey)}
+          {shortenEntity(hexToNpub(props.event.pubkey) || props.event.pubkey)}
         </span>
       </div>
     </div>
