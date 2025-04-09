@@ -190,7 +190,7 @@ export default function KindTeaser(props: KindTeaserProps) {
         }>
           {/* Specialized component view */}
           <Show when={view() === "component" && EventComponent !== undefined}>
-            <div class="overflow-y-auto flex-1 px-3 grid place-items-center max-h-[80svh]">
+            <div class="overflow-y-auto flex-1 px-3 grid place-items-center max-h-[80svh] min-h-60">
               {/* @ts-ignore - The component is dynamically loaded */}
               <EventComponent 
                 event={getCurrentEvent()} 
@@ -202,7 +202,7 @@ export default function KindTeaser(props: KindTeaserProps) {
           {/* Raw JSON view */}
           <Show when={view() === "raw"}>
             <div class="overflow-auto flex-1 px-3">
-              <pre class="h-full text-xs overflow-auto whitespace-pre-wrap break-words max-h-[80svh] bg-gray-200 dark:bg-gray-900 p-4 rounded dark:text-gray-100">
+              <pre class="h-full text-xs overflow-auto whitespace-pre-wrap break-words max-h-[80svh] bg-gray-200 dark:bg-gray-900 p-4 rounded dark:text-gray-100 min-h-60">
                 {JSON.stringify(getCurrentEvent(), null, 2)}
               </pre>
             </div>
@@ -210,7 +210,7 @@ export default function KindTeaser(props: KindTeaserProps) {
           
           {/* Fallback view for all kinds */}
           <Show when={view() === "fallback"}>
-            <div class="overflow-y-auto flex-1 px-3">
+            <div class="overflow-y-auto flex-1 px-3 min-h-60">
               <Fallback event={getCurrentEvent()} />
             </div>
           </Show>

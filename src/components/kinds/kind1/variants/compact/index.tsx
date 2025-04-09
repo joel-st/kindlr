@@ -19,10 +19,10 @@ const CompactKind1Component: Component<{ event: NostrEvent }> = (props) => {
 
   // Truncate content if it's too long
   const displayContent = createMemo(() => {
-    const maxLength = 140;
-    if (props.event.content.length > maxLength) {
-      return props.event.content.substring(0, maxLength) + '...';
-    }
+    // const maxLength = 140;
+    // if (props.event.content.length > maxLength) {
+    //   return props.event.content.substring(0, maxLength) + '...';
+    // }
     return props.event.content;
   });
   
@@ -30,8 +30,8 @@ const CompactKind1Component: Component<{ event: NostrEvent }> = (props) => {
     <div class="flex flex-col gap-1 rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-3 max-w-full">
       {/* Content (truncated) */}
       <div 
-        class="text-gray-800 dark:text-gray-200 text-sm whitespace-pre-wrap break-words line-clamp-3"
-        {...createLinkifiedProps(displayContent(), "text-yellow-500 dark:text-purple-400 hover:underline")}
+        class="text-gray-800 dark:text-gray-200 text-sm whitespace-pre-wrap break-all"
+        {...createLinkifiedProps(displayContent(), "text-yellow-500 dark:text-purple-400 hover:underline break-all")}
       />
       
       {/* Footer with timestamp */}

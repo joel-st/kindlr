@@ -120,7 +120,7 @@ const FullLazyKind0Component: Component<{ event: NostrEvent }> = (props) => {
         <Show when={metadata().about?.trim()}>
           <p 
             class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words text-sm"
-            {...createLinkifiedProps(metadata().about || '', "text-yellow-500 dark:text-purple-400 hover:underline")}
+            {...createLinkifiedProps(metadata().about || '', "text-yellow-500 dark:text-purple-400 hover:underline break-words")}
           />
         </Show>
         

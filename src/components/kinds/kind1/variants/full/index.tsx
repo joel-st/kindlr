@@ -91,7 +91,7 @@ const FullKind1Component: Component<{ event: NostrEvent }> = (props) => {
       {/* Content */}
       <div 
         class="text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words"
-        {...createLinkifiedProps(props.event.content, "text-yellow-500 dark:text-purple-400 hover:underline")}
+        {...createLinkifiedProps(props.event.content, "text-yellow-500 dark:text-purple-400 hover:underline break-words")}
       />
 
       {/* Hashtags */}
