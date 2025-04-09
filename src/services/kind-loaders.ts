@@ -6,6 +6,7 @@
 import { NostrEvent } from "nostr-tools";
 import { BehaviorSubject, Observable } from "rxjs";
 import { queryStore } from "./stores";
+import { loadEvents } from "./loaders";
 
 /**
  * Creates an observable that emits events of a specific kind
@@ -25,6 +26,9 @@ export function getEventsByKind(kind: number, limit: number = 5): Observable<Nos
       subject.next(events.slice(0, limit));
     }
   });
+  
+  // Load events from relays to ensure we have data
+  loadEvents({ kinds: [kind], limit });
   
   // Return a custom observable that cleans up when unsubscribed
   return new Observable<NostrEvent[]>((subscriber) => {

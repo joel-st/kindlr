@@ -6,6 +6,7 @@
 
 import { EventStore, QueryStore } from "applesauce-core";
 import { verifyEvent } from "nostr-tools";
+import { cacheEvent } from "./cache";
 
 /**
  * Central store for all Nostr events.
@@ -15,6 +16,18 @@ export const eventStore = new EventStore();
 
 // verify the events when they are added to the store
 eventStore.verifyEvent = verifyEvent;
+
+// Cache events when they are added to the store
+const originalAdd = eventStore.add;
+eventStore.add = function(event, relay) {
+  // Call the original add method
+  const result = originalAdd.call(this, event, relay);
+  
+  // Cache the event
+  cacheEvent(event);
+  
+  return result;
+};
 
 /**
  * Query store for retrieving data from the event store.

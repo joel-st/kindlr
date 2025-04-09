@@ -8,7 +8,8 @@ import { createSignal, createEffect, Show, onCleanup, For } from "solid-js";
 import { NostrEvent } from "nostr-tools";
 import { eventStore } from "../services/stores";
 import { subscribeEvents } from "../services/nostr";
-import { FaSolidBook, FaBrandsGithub, FaSolidChevronDown } from 'solid-icons/fa'
+import { cacheEvent } from "../services/cache";
+import { FaSolidBook, FaBrandsGithub, FaSolidChevronDown, FaSolidDice } from 'solid-icons/fa'
 import { getKindComponent, hasKindComponent, getKindVariants, getKindDefaultVariant, KindVariant } from "../helpers/kinds";
 import { VsJson } from "solid-icons/vs";
 
@@ -39,6 +40,7 @@ interface KindTeaserProps {
 export default function KindTeaser(props: KindTeaserProps) {
   const [events, setEvents] = createSignal<NostrEvent[]>([]);
   const [loading, setLoading] = createSignal(true);
+  const [currentEventIndex, setCurrentEventIndex] = createSignal(0);
 
   // Set the initial view based on whether an EventComponent exists
   const hasComponentForKind = hasKindComponent(props.kind.kind);
@@ -66,7 +68,7 @@ export default function KindTeaser(props: KindTeaserProps) {
     // Subscribe to events from the event store
     const storeSubscription = eventStore.timeline({ kinds: [props.kind.kind] })
       .subscribe((storeEvents) => {
-        setEvents(storeEvents.slice(0, 1));
+        setEvents(storeEvents.slice(0, 3));
         if (storeEvents.length > 0) {
           setLoading(false);
         }
@@ -74,11 +76,13 @@ export default function KindTeaser(props: KindTeaserProps) {
     
     // Subscribe to events using the service helper function
     const relaySubscription = subscribeEvents(
-      { kinds: [props.kind.kind], limit: 1 },
+      { kinds: [props.kind.kind], limit: 3 },
       {
         onevent: (packet) => {
           eventStore.add(packet.event, packet.relay);
-          console.log(packet.event.kind,packet.event)
+          // Cache the event
+          cacheEvent(packet.event);
+          // console.log(packet.event.kind,packet.event)
         },
         oneose: () => {
           // When EOSE is received, we can stop loading
@@ -93,6 +97,28 @@ export default function KindTeaser(props: KindTeaserProps) {
       relaySubscription.unsubscribe();
     });
   });
+
+  /**
+   * Get the currently selected event
+   */
+  const getCurrentEvent = () => {
+    const eventList = events();
+    if (eventList.length === 0) return eventList[0];
+    
+    // Ensure the index is within bounds
+    const index = Math.min(currentEventIndex(), eventList.length - 1);
+    return eventList[index];
+  };
+
+  /**
+   * Cycle to the next event
+   */
+  const cycleToNextEvent = () => {
+    const eventList = events();
+    if (eventList.length <= 1) return;
+    
+    setCurrentEventIndex((currentEventIndex() + 1) % eventList.length);
+  };
 
   /**
    * Helper function to determine button styling based on current view
@@ -135,6 +161,14 @@ export default function KindTeaser(props: KindTeaserProps) {
             <span class="min-w-0 text-gray-600 dark:text-gray-200 whitespace-nowrap truncate">{props.kind.name}</span>
           </h2>
           <div class="flex flex-row gap-1 items-center shrink-0 ml-auto"> 
+            <button 
+              onClick={cycleToNextEvent} 
+              disabled={events().length <= 1}
+              class={`cursor-pointer bg-yellow-400 hover:bg-yellow-500 dark:bg-purple-700 dark:hover:bg-purple-800 rounded p-2 text-sm dark:text-gray-200 ${events().length <= 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              title="Show different event"
+            >
+              <FaSolidDice size={16} />
+            </button>
             <A href={props.kind.kurl} target="_blank" class="cursor-pointer bg-yellow-400 hover:bg-yellow-500 dark:bg-purple-700 dark:hover:bg-purple-800 rounded p-2 text-sm dark:text-gray-200"><FaSolidBook size={16} /></A>
             <A href={props.kind.nurl} target="_blank" class="cursor-pointer bg-yellow-400 hover:bg-yellow-500 dark:bg-purple-700 dark:hover:bg-purple-800 rounded p-2 text-sm dark:text-gray-200"><FaBrandsGithub size={16} /></A>
           </div>
@@ -159,7 +193,7 @@ export default function KindTeaser(props: KindTeaserProps) {
             <div class="overflow-y-auto flex-1 px-3 grid place-items-center">
               {/* @ts-ignore - The component is dynamically loaded */}
               <EventComponent 
-                event={events()[Math.floor(Math.random() * events().length)]} 
+                event={getCurrentEvent()} 
                 variant={selectedVariant()}
               />
             </div>
@@ -169,7 +203,7 @@ export default function KindTeaser(props: KindTeaserProps) {
           <Show when={view() === "raw"}>
             <div class="overflow-auto flex-1 px-3">
               <pre class="h-full text-xs overflow-auto whitespace-pre-wrap break-words max-h-[80svh] bg-gray-200 dark:bg-gray-900 p-4 rounded dark:text-gray-100">
-                {JSON.stringify(events()[0], null, 2)}
+                {JSON.stringify(getCurrentEvent(), null, 2)}
               </pre>
             </div>
           </Show>
@@ -177,7 +211,7 @@ export default function KindTeaser(props: KindTeaserProps) {
           {/* Fallback view for all kinds */}
           <Show when={view() === "fallback"}>
             <div class="overflow-y-auto flex-1 px-3">
-              <Fallback event={events()[0]} />
+              <Fallback event={getCurrentEvent()} />
             </div>
           </Show>
           

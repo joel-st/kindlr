@@ -7,15 +7,20 @@ import { ReplaceableLoader } from 'applesauce-loaders';
 import { rxNostr, subscribeEvents } from './nostr';
 import { eventStore } from './stores';
 import { Filter } from 'nostr-tools';
+import { cacheRequest, cacheEvent } from './cache';
 
 /**
  * Replaceable loader instance for fetching replaceable events.
  */
-export const replaceableLoader = new ReplaceableLoader(rxNostr);
+export const replaceableLoader = new ReplaceableLoader(rxNostr, {
+	cacheRequest,
+});
 
 // Configure loader to update the event store with fetched events
 replaceableLoader.subscribe(packet => {
 	eventStore.add(packet.event, packet.from);
+	// Cache the event
+	cacheEvent(packet.event);
 });
 
 /**
@@ -26,7 +31,10 @@ replaceableLoader.subscribe(packet => {
 export function loadEvents(filter: Filter) {
 	subscribeEvents(filter, {
 		onevent: (packet) => {
-			eventStore.add(packet.event, packet.from);
+			// Add to event store
+			eventStore.add(packet.event, packet.relay);
+			// Cache the event
+			cacheEvent(packet.event);
 		}
 	});
 }
