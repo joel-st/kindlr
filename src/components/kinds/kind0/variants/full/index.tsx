@@ -9,7 +9,7 @@ import { parseProfileMetadata, getDisplayName, getProfilePicture, getProfileBann
 import { IoGlobeOutline } from "solid-icons/io";
 import { FaSolidAt } from "solid-icons/fa";
 import { SiLightning } from "solid-icons/si";
-import { shortenEntity, hexToNpub } from "../../../../../helpers/nip19";
+import { hexToNpub } from "../../../../../helpers/nip19";
 import { getContrastTextColor } from "../../../../../helpers/colors";
 import { createLinkifiedProps } from "../../../../../helpers/text-links";
 
