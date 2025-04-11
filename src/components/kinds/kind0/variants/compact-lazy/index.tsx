@@ -30,7 +30,7 @@ const CompactLazyKind0Component: Component<{ event: NostrEvent }> = (props) => {
   const [shouldLoadImage, setShouldLoadImage] = createSignal(false);
   
   return (
-    <div class="flex items-center gap-3 p-2 pr-4 rounded-lg bg-gray-100 dark:bg-gray-700 w-auto">
+    <div class="flex items-center gap-3 p-2 pr-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 w-auto">
       {/* Profile picture */}
       <div 
         class="rounded-full overflow-hidden cursor-pointer shrink-0"

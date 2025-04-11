@@ -16,8 +16,9 @@ import "./services/lifecycle";
 // routes
 import HomeView from "./routes/home";
 import NotFoundView from "./routes/404";
-import KindView from "./routes/kind";
-import EventView from "./routes/event";
+import KindView from "./routes/kind/index";
+import KindEventView from "./routes/kind/[event-id]";
+import KindComponentEventView from "./routes/kind/[component-key]/[event-id]";
 
 const root = document.getElementById("root");
 // Determine the base path for router (for GitHub Pages support)
@@ -36,7 +37,8 @@ render(
       <Router base={basePath}>
         <Route path="/" component={HomeView} />
         <Route path="/:kind" component={KindView} />
-        <Route path="/:kind/:eventId" component={EventView} />
+        <Route path="/:kind/:eventId" component={KindEventView} />
+        <Route path="/:kind/:componentKey/:eventId" component={KindComponentEventView} />
         <Route path="*" component={NotFoundView} />
       </Router>
     </>
