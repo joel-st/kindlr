@@ -1,4 +1,4 @@
-import { createSignal, Show, For } from "solid-js";
+import { Show, For } from "solid-js";
 import { NostrEvent } from "nostr-tools";
 import { getKindComponent, getKindVariants } from "../helpers/kinds";
 import Fallback from "./kindFallback/fallback";
@@ -12,9 +12,7 @@ interface KindViewProps {
   componentKey?: string;
 }
 
-export default function KindView(props: KindViewProps) {
-  const [showRawJson, setShowRawJson] = createSignal(false);
-  
+export default function KindView(props: KindViewProps) {  
   const kindInfo = EVENT_KINDS.find(k => k.kind === props.kindNumber);
 
   // Get the appropriate component for this event kind
@@ -27,17 +25,6 @@ export default function KindView(props: KindViewProps) {
   const filteredVariants = props.componentKey 
     ? availableVariants.filter(v => v === props.componentKey)
     : availableVariants;
-
-  // Helper function to get button style
-  const getButtonStyle = (active: boolean) => {
-    const baseStyle = "cursor-pointer rounded px-3 py-1.5 text-sm";
-    
-    if (active) {
-      return `${baseStyle} bg-yellow-500 dark:bg-purple-800 text-black dark:text-gray-200`;
-    }
-    
-    return `${baseStyle} bg-yellow-400 hover:bg-yellow-500 dark:bg-purple-700 dark:hover:bg-purple-800 text-gray-700 dark:text-gray-200`;
-  };
 
   if (!kindInfo) {
     return <div>Kind {props.kindNumber} not found</div>;
@@ -81,14 +68,6 @@ export default function KindView(props: KindViewProps) {
                   {props.event()?.id ? `Event ${props.event()?.id}` : `Sample Event (Kind ${kindInfo.kind})`}
                 </h2>
               </div>
-              
-              <Show when={showRawJson()}>
-                <div class="mb-6">
-                  <pre class="text-xs overflow-auto whitespace-pre-wrap break-words bg-gray-200 dark:bg-gray-900 p-4 rounded text-gray-800 dark:text-gray-100 max-h-[400px]">
-                    {JSON.stringify(props.event(), null, 2)}
-                  </pre>
-                </div>
-              </Show>
               
               <div class="flex flex-col gap-8">
                 {/* Specialized Component with Variants */}

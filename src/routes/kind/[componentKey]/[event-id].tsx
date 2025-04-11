@@ -12,7 +12,7 @@ export default function KindComponentEventRoute() {
   const eventId = params.eventId;
   const componentKey = params.componentKey;
   
-  const { event, loading, kindInfo } = useKindEventLoader(kindNumber, eventId);
+  const { event, loading } = useKindEventLoader(kindNumber, eventId);
   
   return (
     <KindViewComponent 

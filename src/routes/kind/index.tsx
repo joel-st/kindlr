@@ -10,7 +10,7 @@ export default function KindRoute() {
   const params = useParams();
   const kindNumber = parseInt(params.kind);
   
-  const { event, loading, kindInfo } = useKindEventLoader(kindNumber);
+  const { event, loading } = useKindEventLoader(kindNumber);
   
   return (
     <KindViewComponent 
